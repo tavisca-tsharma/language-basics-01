@@ -6,19 +6,17 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Main");
-            Test("42*47=1?74");
-            Test("4?*47=1974");
-            Test("42*?7=1974");
-            Test("42*?47=1974");
-            Test("2*12?=247");
-            //Console.ReadKey(true);
+            Test("42*47=1?74", 9);
+            Test("4?*47=1974", 2);
+            Test("42*?7=1974", 4);
+            Test("42*?47=1974", -1);
+            Test("2*12?=247", -1);
         }
 
-        private static void Test(string args)
+        private static void Test(string args, int expected)
         {
-            //Console.WriteLine(args);
-            Console.WriteLine(FindDigit(args));
+            var result = FindDigit(args).Equals(expected) ? "PASS" : "FAIL";
+            Console.WriteLine($"{args} : {result}");
         }
 
         public static int FindDigit(string equation)
