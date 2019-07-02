@@ -24,75 +24,48 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
         public static int FindDigit(string equation)
         {
             //Console.WriteLine("FindDigit");
-            int i=0, index=-1, star=-1;
-            string a="";
-            string b, c;
+            int index=0, questionIndex=-1, starIndex = -1;
+            string num1="";
+            string num2, num3;
+            int missingDigit=0;
 
-            while (!equation.Substring(i, 1).Equals("=")){
+            while (equation[index] !='='){
                 //Console.WriteLine(equati)
-                if (equation.Substring(i, 1).Equals("?")) {
-                    index=i;
+                if (equation[index] == '?') {
+                    questionIndex = index;
                 }
-                else if (equation.Substring(i, 1).Equals("*")){
-                    star = i;
-                    a=equation.Substring(0, i);
+                else if (equation[index] == '*')
+                {
+                    starIndex = index;
+                    num1= equation.Substring(0, index);
                 }
-                i++;
+                index++;
             }
-            b=equation.Substring(star+1, i-star-1);
-            c=equation.Substring(i+1);
-            
-            if (index == -1){
-                i=0;
-                while (!c.Substring(i, 1).Equals("?"))
-                    i++;
-                return multiply ( Convert.ToInt32(a), Convert.ToInt32(b), c, i );
+            num2 = equation.Substring(starIndex + 1, index - starIndex - 1);
+            num3 = equation.Substring(index + 1);
+
+            if (questionIndex == -1)
+            {
+                index = 0;
+                while (num3[index] != '?')
+                    index++;
+                missingDigit = Calculation.Multiply(Convert.ToInt32(num1), Convert.ToInt32(num2), num3, index);
             }
-            
-            if (index < star)
-                return divide ( Convert.ToInt32(c), Convert.ToInt32(b), a, index );
-            
-            //Console.WriteLine("star="+star+", index= "+index);
-            index = index-star-1;
-            //Console.WriteLine
-            return divide ( Convert.ToInt32(c), Convert.ToInt32(a), b, index );
+
+            else if (questionIndex < starIndex)
+                missingDigit = Calculation.Divide(Convert.ToInt32(num3), Convert.ToInt32(num2), num1, questionIndex);
+
+            else
+            {
+                questionIndex = questionIndex - starIndex - 1;
+                //Console.WriteLine
+                missingDigit = Calculation.Divide(Convert.ToInt32(num3), Convert.ToInt32(num1), num2, questionIndex);
+            }
+
+            return missingDigit;
         }
 
-        public static int divide(int d, int q, string r, int index){
-            //Console.WriteLine("divide");
-            if (d%q!=0)
-                return -1;
-            
-            int e = d/q;
-            string s = Convert.ToString(e);
-            if (s.Length!=r.Length)
-                return -1;
-                        
-            if (index>0 && !s.Substring(0, index).Equals(r.Substring(0, index)))
-                return -1;
-            
-            if (index<(s.Length-1) && !s.Substring(index+1).Equals(r.Substring(index+1)))
-                return -1;
-            
-            return Convert.ToInt32(s.Substring(index, 1));
-        }
-
-        public static int multiply(int x, int y, String r, int index){
-            //Console.WriteLine("multiply");
-            int e = x*y;
-            string s = Convert.ToString(e);
-            if (s.Length!=r.Length)
-                return -1;
-                        
-            if (index>0 && !s.Substring(0, index).Equals(r.Substring(0, index)))
-                return -1;
-            
-            if (index<(s.Length-1) && !s.Substring(index+1).Equals(r.Substring(index+1)))
-                return -1;
-            
-            int j= Convert.ToInt32(s.Substring(index, 1));
-            return j;
-        }
+        
 
     }
 }
